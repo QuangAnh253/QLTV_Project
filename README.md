@@ -79,8 +79,7 @@ Phần mềm quản lý thư viện được phát triển bằng C\# WinForms t
 
 ## 🔄 PHẦN 2: QUY TRÌNH GIT WORKFLOW
 
-### ````markdown
-# 👥 Hướng Dẫn Dành Cho **Members** — Clone & Setup Dự Án
+### 👥 Hướng Dẫn Dành Cho **Members** — Clone & Setup Dự Án
 
 ---
 
@@ -218,17 +217,6 @@ Sau đó:
   git branch -d [ten-nhanh-cua-ban]
   git checkout main
   ```
-
----
-
-## 💡 Tóm Tắt Workflow
-
-> * Mỗi người code trên **nhánh riêng**
-> * Gửi **Pull Request** để **Quang Anh review**
-> * Code rõ ràng, tuân thủ quy trình, tránh xung đột merge.
-
-```
-```
 
 -----
 
