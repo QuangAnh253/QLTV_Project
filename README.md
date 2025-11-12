@@ -1,393 +1,241 @@
------
+# Hệ Thống Quản Lý Thư Viện (QLTV)
 
-# 📚 QLTV - Hệ Thống Quản Lý Thư Viện
+## Mô Tả Dự Án
 
-## 🎯 Mô Tả Dự Án
+Phần mềm Quản lý thư viện phát triển bằng C\# WinForms, được xây dựng theo kiến trúc 3 lớp (3-Layer Architecture) để đảm bảo tính module hóa và dễ bảo trì.
 
-Phần mềm quản lý thư viện được phát triển bằng C\# WinForms theo kiến trúc 3 lớp:
+### Kiến trúc
 
-  - **DAL** (Data Access Layer): Tương tác với SQL Server
-  - **BLL** (Business Logic Layer): Xử lý logic nghiệp vụ
-  - **GUI** (Graphical User Interface): Giao diện người dùng
-
------
-
-## ⚙️ PHẦN 1: SETUP DỰ ÁN (CHO LEADER & MEMBERS)
-
-### 📋 Yêu Cầu Hệ Thống
-
-  - Visual Studio 2022 (hoặc 2019)
-  - .NET Framework 4.7.2 trở lên
-  - SQL Server 2019 hoặc SQL Server Express
-  - Git
-
-### 🔧 Bước 1: Setup Database (QUAN TRỌNG\!)
-
-#### 1.1. Tạo Database trong SQL Server
-
-```sql
--- Mở SQL Server Management Studio (SSMS)
--- Chạy script trong Database/01_CreateDatabase.sql
--- Chạy script trong Database/02_InsertSampleData.sql (nếu có)
-```
-
-#### 1.2. Lấy Connection String
-
-1.  Mở SSMS, kết nối vào SQL Server
-2.  Lấy tên Server (ví dụ: `localhost`, `.\SQLEXPRESS`, `DESKTOP-ABC\SQLEXPRESS`)
-3.  Mở file `Database/ConnectionString.txt` để xem mẫu connection string
-
-#### 1.3. Cấu Hình App.config
-
-1.  Mở file `QLTV_GUI/App.config`
-2.  Tìm dòng:
-    ```xml
-    <add name="QLTV_DB" 
-         connectionString="Server=YOUR_SERVER_NAME;Database=QLTV_DB;Integrated Security=True;" 
-         providerName="System.Data.SqlClient" />
-    ```
-3.  **THAY `YOUR_SERVER_NAME`** bằng tên SQL Server của bạn
-4.  LƯU FILE
-
-### 🏗️ Bước 2: Setup Project References
-
-**2.1. Add References cho QLTV\_DAL**
-
-  * Right click `QLTV_DAL` project → Add → Reference → Assemblies
-  * ✓ `System.Configuration`
-  * ✓ `System.Data`
-
-**2.2. Add References cho QLTV\_BLL**
-
-  * Right click `QLTV_BLL` project → Add → Reference
-  * ✓ Projects → `QLTV_DAL`
-
-**2.3. Add References cho QLTV\_GUI**
-
-  * Right click `QLTV_GUI` project → Add → Reference
-  * ✓ Projects → `QLTV_BLL`
-  * ✓ Projects → `QLTV_DAL`
-  * ✓ `System.Configuration` (Assemblies)
-
-### ✅ Bước 3: Kiểm Tra Build
-
-1.  Set `QLTV_GUI` làm StartUp Project (Right click → Set as StartUp Project)
-2.  Build toàn bộ solution: **Ctrl + Shift + B**
-3.  Nếu không có lỗi → SETUP THÀNH CÔNG\!
+  * **DAL (Data Access Layer):** Chịu trách nhiệm tương tác trực tiếp với cơ sở dữ liệu SQL Server.
+  * **BLL (Business Logic Layer):** Xử lý các logic nghiệp vụ, quy tắc và tính toán của hệ thống.
+  * **GUI (Graphical User Interface):** Giao diện người dùng WinForms, tương tác với BLL.
 
 -----
 
-## 🔄 PHẦN 2: QUY TRÌNH GIT WORKFLOW
+## Yêu Cầu Hệ Thống
 
-### 👥 Hướng Dẫn Dành Cho **Members** — Clone & Setup Dự Án
+  * Visual Studio 2019 (hoặc 2022)
+  * .NET Framework 4.7.2 (trở lên)
+  * SQL Server 2019 (hoặc SQL Server Express)
+  * Git
 
----
+-----
 
-## ⚙️ 1. Clone Repo Về Máy
+## Hướng Dẫn Cài Đặt và Cấu Hình
+
+Vui lòng thực hiện các bước sau để thiết lập môi trường phát triển.
+
+### 1\. Clone Repository
+
+Sử dụng Git để clone dự án về máy:
 
 ```bash
 git clone https://github.com/QuangAnh253/QLTV_Project.git
 cd QLTV_Project
-````
+```
 
----
+### 2\. Setup Database
 
-## 🗃️ 2. Setup Database
+1.  Mở **SQL Server Management Studio (SSMS)**.
+2.  Kết nối với SQL Server instance của bạn.
+3.  Chạy script `Database/01_CreateDatabase.sql` để tạo cơ sở dữ liệu và các bảng.
+4.  (Tùy chọn) Chạy script `Database/02_InsertSampleData.sql` để thêm dữ liệu mẫu.
 
-1. Mở **SQL Server Management Studio (SSMS)**.
-2. Chạy lần lượt các script sau:
+### 3\. Cấu Hình Connection String
 
-   * `Database/01_CreateDatabase.sql`
-   * `Database/02_InsertSampleData.sql`
-3. Mở file `QLTV_GUI/App.config` và sửa **connection string** cho đúng tên server của bạn.
+1.  Mở file `QLTV_GUI/App.config` trong Visual Studio.
 
----
+2.  Tìm đến phần `connectionStrings`.
 
-## 🧩 3. Mở Solution & Build
+3.  Thay đổi giá trị `YOUR_SERVER_NAME` trong `connectionString` thành tên SQL Server của bạn (ví dụ: `.\SQLEXPRESS` hoặc `DESKTOP-ABC\SQLEXPRESS`).
 
-1. Mở file `QLTV_Project.sln` bằng **Visual Studio**.
-2. Build solution bằng tổ hợp phím:
+    ```xml
+    <connectionStrings>
+      <add name="QLTV_DB" 
+           connectionString="Server=YOUR_SERVER_NAME;Database=QLTV_DB;Integrated Security=True;" 
+           providerName="System.Data.SqlClient" />
+    </connectionStrings>
+    ```
 
-   ```text
-   Ctrl + Shift + B
-   ```
+### 4\. Cấu Hình Project References
 
----
+Đảm bảo các project trong solution tham chiếu đúng:
 
-## ✅ 4. Kiểm Tra Kết Nối Database
+  * **QLTV\_DAL:**
+      * Assemblies: `System.Configuration`, `System.Data`
+  * **QLTV\_BLL:**
+      * Projects: `QLTV_DAL`
+  * **QLTV\_GUI:**
+      * Projects: `QLTV_BLL`, `QLTV_DAL`
+      * Assemblies: `System.Configuration`
 
-* Chạy project.
-* Nếu không báo lỗi kết nối → setup thành công.
+### 5\. Build và Chạy Thử
 
----
+1.  Trong Solution Explorer, click chuột phải vào project `QLTV_GUI` và chọn **Set as StartUp Project**.
+2.  Build solution (Phím tắt: **Ctrl + Shift + B**).
+3.  Nếu không có lỗi, chạy dự án (Phím tắt: **F5**). Nếu ứng dụng khởi động và không báo lỗi kết nối, quá trình cài đặt đã thành công.
 
-# 🔁 Quy Trình Làm Việc Chuẩn (Workflow - Pull Request)
+-----
 
-Đây là quy trình **bắt buộc** để **Quang Anh** có thể review code trước khi merge vào `main`.
+## Quy Trình Làm Việc (Git Workflow)
 
----
+Chúng ta sử dụng mô hình Pull Request để quản lý code. Nhánh `main` được bảo vệ và yêu cầu review trước khi merge.
 
-## 🧠 Bước 1: Bắt Đầu Task Mới (Trên Nhánh Riêng)
+### Bước 1: Bắt Đầu Task Mới
 
-Lấy code mới nhất từ `main`:
+Luôn bắt đầu từ nhánh `main` đã được cập nhật.
 
 ```bash
-# Chuyển sang nhánh main
+# Chuyển về nhánh main
 git checkout main
 
-# Kéo code mới nhất từ server
+# Lấy code mới nhất
 git pull origin main
 ```
 
-Tạo nhánh mới cho nhiệm vụ của bạn theo quy tắc:
+Tạo nhánh mới cho nhiệm vụ của bạn theo cấu trúc: `[ten-thanh-vien]/[mo-ta-ngan-task]`.
 
-> **Cấu trúc nhánh:** `[tên-của-bạn]/[mô-tả-ngắn-task]`
+**Prefix nhánh:**
 
-**Danh sách prefix:**
-
-| Thành viên        | Prefix nhánh |
-| ----------------- | ------------ |
-| Nguyễn Duy Thành  | `duythanh`   |
-| Vũ Thị Thùy Trang | `thuytrang`  |
-| Nguyễn Minh Lộc   | `vanloc`     |
-| Nguyễn Thị Hồng   | `thihong`    |
+| Thành viên | Prefix nhánh |
+| :--- | :--- |
+| Nguyễn Duy Thành | `duythanh` |
+| Vũ Thị Thùy Trang | `thuytrang` |
+| Nguyễn Minh Lộc | `vanloc` |
+| Nguyễn Thị Hồng | `thihong` |
+| Lê Quang Anh | `quanganh` |
 
 **Ví dụ:**
 
 ```bash
-# Duy Thành code module Quản lý sách
-git checkout -b duythanh/code-module-sach
-
-# Thị Hồng thiết kế form login
-git checkout -b thihong/ui-form-login
+# Duy Thành làm module Sách
+git checkout -b duythanh/feature-module-sach
 ```
 
----
+### Bước 2: Code và Commit
 
-## 💻 Bước 2: Code & Commit Trên Nhánh Mới
-
-Làm việc và commit như bình thường:
+Làm việc trên nhánh mới của bạn và commit các thay đổi thường xuyên với message rõ ràng.
 
 ```bash
-# Thêm toàn bộ thay đổi
+# Thêm các file đã thay đổi
 git add .
 
-# Commit code
-git commit -m "Feature: Hoan thanh code BookDAO"
+# Commit với message
+git commit -m "Feat: Hoan thien chuc nang BookDAO"
 ```
 
-> Bạn có thể commit nhiều lần trên cùng nhánh.
+### Bước 3: Push và Tạo Pull Request
 
----
-
-## 🚀 Bước 3: Push & Tạo Pull Request
-
-Khi đã hoàn thành task:
+Khi hoàn thành task, đẩy nhánh của bạn lên GitHub.
 
 ```bash
-# Đẩy nhánh của bạn lên GitHub
-git push origin [ten-nhanh-cua-ban]
-
-# Nếu là lần đầu push:
-git push --set-upstream origin [ten-nhanh-cua-ban]
+# Đẩy nhánh mới lên remote (thêm -u cho lần đầu tiên)
+git push -u origin [ten-nhanh-cua-ban]
 ```
 
-Sau đó:
+Sau đó, truy cập GitHub:
 
-1. Truy cập repo trên **GitHub**.
-2. Nhấn **“Compare & pull request”**.
-3. Viết tiêu đề và mô tả rõ ràng (VD: *Hoàn thành chức năng quản lý sách*).
-4. Ở phần **Reviewers**, chọn **Quang Anh**.
-5. Nhấn **Create pull request**.
+1.  Bạn sẽ thấy thông báo "Compare & pull request". Nhấn vào đó.
+2.  Đặt tiêu đề rõ ràng (VD: *Hoàn thành chức năng Quản lý Sách*).
+3.  Trong phần **Reviewers**, chọn **Quang Anh**.
+4.  Nhấn **Create pull request**.
 
----
+### Bước 4: Review và Merge
 
-## 🔍 Bước 4: Review & Merge
+  * **Lưu ý:** Thành viên không tự merge code của mình vào `main`.
+  * **Quang Anh** sẽ review code.
+      * Nếu code đạt yêu cầu, PR sẽ được merge.
+      * Nếu cần chỉnh sửa, review-er sẽ để lại bình luận. Thành viên tiếp tục sửa code và push lên nhánh cũ (PR sẽ tự động cập nhật).
+  * Sau khi nhánh được merge, bạn có thể xóa nhánh local và quay về `main`.
 
-* ❌ **Không được tự merge.**
-* **Quang Anh** sẽ review code:
+<!-- end list -->
 
-  * ✅ Nếu đạt yêu cầu → Merge vào `main`.
-  * 🛠️ Nếu cần chỉnh sửa → Quang Anh comment góp ý.
-    Bạn chỉ cần sửa code, commit & push lên **cùng nhánh**, PR sẽ tự cập nhật.
-* Sau khi nhánh đã merge:
-
-  ```bash
-  # Xóa nhánh local và quay lại main
-  git branch -d [ten-nhanh-cua-ban]
-  git checkout main
-  ```
+```bash
+git checkout main
+git pull origin main
+git branch -d [ten-nhanh-cua-ban]
+```
 
 -----
 
-## 🚀 PHẦN 3: PHÂN CÔNG & HƯỚNG PHÁT TRIỂN
+## Phân Công & Phụ Trách Module
 
-### 📊 Phân Công Module Chính Thức
+### Lê Quang Anh
 
-| Tên Thành Viên | Vai Trò & Nhiệm Vụ Chính |
-| :--- | :--- |
-| **Lê Quang Anh** | **(Leader)**: Kiến trúc, Database, Git, Module Authentication (`UserDAO`/`BLL`), Module Mượn/Trả (`BorrowDAO`/`BLL`). |
-| **Nguyễn Duy Thành** | **(Module Sách)**: `BookDAO`, `BookBLL`, Logic `FormBookManagement`. |
-| **Vũ Thị Thùy Trang** | **(Module Độc Giả)**: `MemberDAO`, `MemberBLL`, Logic `FormMemberManagement`. |
-| **Nguyễn Thị Hồng** | **(UI Design)**: Thiết kế toàn bộ giao diện (`.cs [Design]`) cho tất cả các Form. |
-| **Nguyễn Minh Lộc** | **(Login & Data)**: Logic `FormLogin`, Logic `FormMain` (navigation), `02_InsertSampleData.sql`. |
+  * **Phụ trách:** Kiến trúc dự án, Database, quản lý Git, Module Authentication (`UserDAO`/`BLL`), Module Mượn/Trả (`BorrowDAO`/`BLL`).
+  * **Nhiệm vụ:**
+      * Thiết kế, hoàn thiện Database (`01_CreateDatabase.sql`).
+      * Code class `DatabaseConnection.cs`.
+      * Setup và bảo vệ nhánh `main`, review và merge Pull Requests.
+      * Phát triển các nghiệp vụ phức tạp (Authentication, Borrow/Return).
+      * Hỗ trợ các thành viên khi gặp vấn đề về kỹ thuật.
 
-# 👥 Phân Công Nhiệm Vụ Dự Án Quản Lý Thư Viện
+### Nguyễn Duy Thành
 
----
+  * **Phụ trách:** Module Quản lý Sách.
+  * **Nhiệm vụ:**
+      * Code `BookDAO.cs` (CRUD, Search...).
+      * Code `BookBLL.cs` (Validate dữ liệu sách).
+      * Xử lý logic sự kiện cho `FormBookManagement.cs` (load data, gọi BLL để Thêm/Sửa/Xóa).
 
-## 👤 **Lê Quang Anh** (Leader - Kiến trúc & Nghiệp vụ lõi)
+### Vũ Thị Thùy Trang
 
-**Vai trò:**  
-Chịu trách nhiệm kiến trúc, các nghiệp vụ phức tạp nhất và quản lý source code.
+  * **Phụ trách:** Module Quản lý Độc Giả.
+  * **Nhiệm vụ:**
+      * Code `MemberDAO.cs` (CRUD, Search...).
+      * Code `MemberBLL.cs` (Validate email, SĐT...).
+      * Xử lý logic sự kiện cho `FormMemberManagement.cs`.
 
-### 🧩 Database & Architecture (Nền tảng)
-- **Thiết kế & Hoàn thiện Database:**  
-  Viết và chốt hạ file `Database/01_CreateDatabase.sql`, đảm bảo bao gồm tất cả các bảng, khóa ngoại, và ràng buộc cần thiết.
-- **Code `DatabaseConnection.cs`:**  
-  Hoàn thiện 100% class này, bao gồm cả hàm `TestConnection` để team có thể kiểm tra kết nối.
-- **Quản lý Git:**  
-  - Setup GitHub repo.  
-  - Bảo vệ nhánh `main` (yêu cầu Pull Request).  
-  - Là người duy nhất **review & merge** code của các thành viên khác.
+### Nguyễn Thị Hồng
 
-### ⚙️ Module Lõi & Phức Tạp Nhất
-#### 🔐 Authentication (Xác thực)
-- `UserDAO.cs`: Viết code validate user/pass.  
-- `UserBLL.cs`: Xử lý logic, mã hóa password (nếu có).
+  * **Phụ trách:** Thiết kế Giao diện người dùng (UI Design).
+  * **Nhiệm vụ:**
+      * Thiết kế file `.cs [Design]` cho tất cả các Form (Login, Main, Book, Member, Borrow).
+      * Đảm bảo giao diện nhất quán, chuyên nghiệp.
+      * Đặt tên control theo chuẩn (ví dụ: `txtBookTitle`, `dgvBooks`, `btnAddNewBook`).
 
-#### 📚 Borrow Module (Mượn/Trả)
-- `BorrowDAO.cs`: Code các query mượn, trả, tìm phiếu, quá hạn.  
-- `BorrowBLL.cs`: Xử lý logic nghiệp vụ (giảm/tăng `Available` trong Books, kiểm tra phạt...).
+### Nguyễn Minh Lộc
 
-### 🧠 Hỗ Trợ & Tích Hợp
-- Hỗ trợ các thành viên khi bị "tắc" ở phần DAL hoặc BLL.  
-- Tích hợp (merge) các form vào `FormMain`.
-
----
-
-## 👤 **Nguyễn Duy Thành** (Module Quản Lý Sách)
-
-**Vai trò:**  
-Chịu trách nhiệm hoàn chỉnh (full-stack) cho module **Quản lý sách**.
-
-### 📘 Code
-- `BookDAO.cs`: Hoàn thiện tất cả các hàm CRUD (Get, Insert, Update, Delete, Search...).  
-- `BookBLL.cs`: Validate dữ liệu sách (Quantity ≥ 0, Title không rỗng...).
-
-### 🧩 Giao Diện & Logic
-- `FormBookManagement.cs` (Logic):
-  - Load data lên `DataGridView`.  
-  - Lấy data từ `TextBox` gọi BLL để Thêm/Sửa/Xóa.  
-  - Xử lý sự kiện click cho các button.
-
----
-
-## 👤 **Vũ Thị Thùy Trang** (Module Quản Lý Độc Giả)
-
-**Vai trò:**  
-Chịu trách nhiệm hoàn chỉnh (full-stack) cho module **Quản lý độc giả**.
-
-### 📗 Code
-- `MemberDAO.cs`: Hoàn thiện tất cả các hàm CRUD.  
-- `MemberBLL.cs`: Validate dữ liệu (format email, số điện thoại...).
-
-### 🧩 Giao Diện & Logic
-- `FormMemberManagement.cs` (Logic):
-  - Load data lên `DataGridView`.  
-  - Lấy data từ `TextBox` gọi BLL để Thêm/Sửa/Xóa.  
-  - Xử lý sự kiện click.
-
----
-
-## 👤 **Nguyễn Thị Hồng** (UI Design)
-
-**Vai trò:**  
-Chịu trách nhiệm **thiết kế toàn bộ giao diện người dùng (UI).**
-
-### 🎨 Thiết Kế Giao Diện (UI Design)
-Thiết kế phần **[Design]** của tất cả các form:
-- `FormLogin.cs [Design]`  
-- `FormMain.cs [Design]` (menu, điều hướng, icon)  
-- `FormBookManagement.cs [Design]`  
-- `FormMemberManagement.cs [Design]`  
-- `FormBorrowManagement.cs [Design]`
-
-### 🧱 Chuẩn Hóa
-- Đảm bảo giao diện **đẹp, nhất quán**.  
-- Các control đặt tên đúng chuẩn (ví dụ: `txtBookTitle`, `dgvBooks`, `btnAddNewBook`).
-
----
-
-## 👤 **Nguyễn Minh Lộc** (Login & Data)
-
-**Vai trò:**  
-Chịu trách nhiệm **điểm vào (entry-point)** của ứng dụng và **dữ liệu test.**
-
-### 🔑 Code Logic
-- `FormLogin.cs` (Logic):
-  - Lấy `username` / `password` từ `TextBox`.  
-  - Gọi `UserBLL.Login()` (do Lê Quang Anh viết).  
-  - Nếu đăng nhập thành công → mở `FormMain`, đóng `FormLogin`.
-
-- `FormMain.cs` (Logic):
-  - Viết sự kiện `Click` cho các nút menu để mở form con (do Nguyễn Thị Hồng thiết kế).
-
-### 🧾 Data & Test
-- Viết/bổ sung script `Database/02_InsertSampleData.sql` (chèn dữ liệu mẫu để test).  
-- Phối hợp test các chức năng sau khi hoàn thành.
+  * **Phụ trách:** Logic Form Login, Form Main và Dữ liệu mẫu.
+  * **Nhiệm vụ:**
+      * Xử lý logic `FormLogin.cs` (gọi `UserBLL.Login()`, xử lý kết quả).
+      * Xử lý logic `FormMain.cs` (sự kiện click menu để mở các form con).
+      * Viết và bổ sung script `Database/02_InsertSampleData.sql` để cung cấp dữ liệu test.
 
 -----
 
-### 🔍 Các Chức Năng Cần Phát Triển
+## Danh Sách Tính Năng
 
-1.  **Authentication (Đăng nhập)**
-      * Validate username/password
-      * Phân quyền Admin/Staff
-      * Session management
-2.  **Quản Lý Sách**
-      * Thêm/Sửa/Xóa sách
-      * Tìm kiếm theo: tên sách, tác giả, thể loại
-      * Hiển thị số lượng available/borrowed
-3.  **Quản Lý Độc Giả**
-      * CRUD độc giả
-      * Validate phone/email format
-      * Xem lịch sử mượn của độc giả
-4.  **Mượn/Trả Sách**
-      * Tạo phiếu mượn (kiểm tra sách còn không)
-      * Trả sách (cập nhật return date, tăng số lượng)
-      * Tính phí phạt trễ hạn
-      * Xem danh sách sách quá hạn
-5.  **Báo Cáo/Thống Kê (Nâng cao)**
-      * Sách được mượn nhiều nhất
-      * Độc giả mượn nhiều nhất
-      * Báo cáo theo tháng/năm
+1.  **Authentication:** Đăng nhập, phân quyền (Admin/Staff).
+2.  **Quản lý Sách:** CRUD, tìm kiếm (tên sách, tác giả, thể loại).
+3.  **Quản lý Độc Giả:** CRUD, tìm kiếm, xem lịch sử mượn.
+4.  **Mượn/Trả Sách:**
+      * Tạo phiếu mượn (kiểm tra số lượng sách).
+      * Trả sách (cập nhật ngày trả, số lượng sách).
+      * Xử lý nghiệp vụ trễ hạn, phạt (nếu có).
+      * Liệt kê sách quá hạn.
 
-### 🎨 Gợi Ý Cải Tiến
+## Lộ Trình Phát Triển (Roadmap)
+
+Các tính năng/cải tiến dự kiến trong tương lai:
 
   * **UI/UX:**
-      * Dùng icon cho button
-      * Theme màu thống nhất
-      * Validation message thân thiện
+      * Hoàn thiện theme màu thống nhất.
+      * Cải thiện thông báo lỗi và validation.
   * **Tính năng:**
-      * Export Excel
-      * In phiếu mượn
-      * Gửi email nhắc trả sách
-      * Dashboard với chart
+      * Dashboard thống kê (sách mượn nhiều, độc giả tích cực).
+      * Export dữ liệu ra Excel.
+      * In phiếu mượn.
   * **Bảo mật:**
-      * Mã hóa password (MD5/SHA256)
-      * Lock user sau 3 lần đăng nhập sai
-      * Log hoạt động user
+      * Mã hóa mật khẩu (SHA256).
+      * Ghi log (logging) hoạt động của người dùng.
 
-### 📞 Hỗ Trợ
+-----
 
-  * **Gặp vấn đề?**
-      * Không kết nối được database → Kiểm tra connection string
-      * Build lỗi → Kiểm tra references giữa các project
-      * Conflict Git → Liên hệ leader để hỗ trợ merge
-  * **Contact Leader:**
-      * **Lê Quang Anh** - lequanganh253@gmail.com
+## Hỗ Trợ
 
-### 📝 License
-
-Dự án học tập - Đại học Công nghệ Giao thông vận tải/74DCHT22 - 2025
+  * **Vấn đề build lỗi:** Kiểm tra lại các **Project References**.
+  * **Vấn đề kết nối:** Kiểm tra lại **Connection String** trong `App.config`.
+  * **Vấn đề về Git (conflict,...):** Liên hệ **Quang Anh** để được hỗ trợ.
+  * **Câu hỏi về nghiệp vụ hoặc kỹ thuật:**
+      * Email: lequanganh253@gmail.com
