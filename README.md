@@ -391,5 +391,3 @@ Chịu trách nhiệm **điểm vào (entry-point)** của ứng dụng và **d�
 ### 📝 License
 
 Dự án học tập - Đại học Công nghệ Giao thông vận tải/74DCHT22 - 2025
-
-```
