@@ -336,7 +336,6 @@ Chịu trách nhiệm **điểm vào (entry-point)** của ứng dụng và **d�
 ### 🧾 Data & Test
 - Viết/bổ sung script `Database/02_InsertSampleData.sql` (chèn dữ liệu mẫu để test).  
 - Phối hợp test các chức năng sau khi hoàn thành.
-```
 
 -----
 
@@ -392,3 +391,5 @@ Chịu trách nhiệm **điểm vào (entry-point)** của ứng dụng và **d�
 ### 📝 License
 
 Dự án học tập - Đại học Công nghệ Giao thông vận tải/74DCHT22 - 2025
+
+```
