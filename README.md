@@ -79,69 +79,156 @@ Phần mềm quản lý thư viện được phát triển bằng C\# WinForms t
 
 ## 🔄 PHẦN 2: QUY TRÌNH GIT WORKFLOW
 
-### 👨‍💼 Dành cho LEADER (Setup lần đầu)
+### ````markdown
+# 👥 Hướng Dẫn Dành Cho **Members** — Clone & Setup Dự Án
 
-### 👥 Dành cho MEMBERS (Clone và setup)
+---
+
+## ⚙️ 1. Clone Repo Về Máy
 
 ```bash
-# 1. Clone repo về máy
 git clone https://github.com/QuangAnh253/QLTV_Project.git
 cd QLTV_Project
+````
 
-# 2. Setup Database (theo hướng dẫn ở Phần 1)
-# - Chạy script SQL
-# - Sửa App.config
+---
 
-# 3. Mở solution và build
-# - Mở file QLTV_Project.sln bằng Visual Studio
-# - Build solution (Ctrl + Shift + B)
+## 🗃️ 2. Setup Database
 
-# 4. Kiểm tra kết nối database
-# - Chạy project, nếu không lỗi kết nối → OK!
-```
+1. Mở **SQL Server Management Studio (SSMS)**.
+2. Chạy lần lượt các script sau:
 
-### 🔁 Quy Trình Làm Việc Hàng Ngày
+   * `Database/01_CreateDatabase.sql`
+   * `Database/02_InsertSampleData.sql`
+3. Mở file `QLTV_GUI/App.config` và sửa **connection string** cho đúng tên server của bạn.
 
-**Trước khi bắt đầu code (PULL mới nhất)**
+---
+
+## 🧩 3. Mở Solution & Build
+
+1. Mở file `QLTV_Project.sln` bằng **Visual Studio**.
+2. Build solution bằng tổ hợp phím:
+
+   ```text
+   Ctrl + Shift + B
+   ```
+
+---
+
+## ✅ 4. Kiểm Tra Kết Nối Database
+
+* Chạy project.
+* Nếu không báo lỗi kết nối → setup thành công.
+
+---
+
+# 🔁 Quy Trình Làm Việc Chuẩn (Workflow - Pull Request)
+
+Đây là quy trình **bắt buộc** để **Quang Anh** có thể review code trước khi merge vào `main`.
+
+---
+
+## 🧠 Bước 1: Bắt Đầu Task Mới (Trên Nhánh Riêng)
+
+Lấy code mới nhất từ `main`:
 
 ```bash
+# Chuyển sang nhánh main
+git checkout main
+
+# Kéo code mới nhất từ server
 git pull origin main
 ```
 
-**Sau khi hoàn thành task (COMMIT & PUSH)**
+Tạo nhánh mới cho nhiệm vụ của bạn theo quy tắc:
+
+> **Cấu trúc nhánh:** `[tên-của-bạn]/[mô-tả-ngắn-task]`
+
+**Danh sách prefix:**
+
+| Thành viên        | Prefix nhánh |
+| ----------------- | ------------ |
+| Nguyễn Duy Thành  | `duythanh`   |
+| Vũ Thị Thùy Trang | `thuytrang`  |
+| Nguyễn Minh Lộc   | `vanloc`     |
+| Nguyễn Thị Hồng   | `thihong`    |
+
+**Ví dụ:**
 
 ```bash
-# 1. Kiểm tra file đã thay đổi
-git status
+# Duy Thành code module Quản lý sách
+git checkout -b duythanh/code-module-sach
 
-# 2. Add các file cần commit
+# Thị Hồng thiết kế form login
+git checkout -b thihong/ui-form-login
+```
+
+---
+
+## 💻 Bước 2: Code & Commit Trên Nhánh Mới
+
+Làm việc và commit như bình thường:
+
+```bash
+# Thêm toàn bộ thay đổi
 git add .
 
-# 3. Commit với message rõ ràng
-git commit -m "Feature: Hoàn thành chức năng quản lý sách"
-
-# 4. Pull lại để tránh conflict
-git pull origin main
-
-# 5. Nếu có conflict, xử lý rồi mới push
-git push origin main
+# Commit code
+git commit -m "Feature: Hoan thanh code BookDAO"
 ```
 
-### ⚠️ Lưu Ý Tránh Conflict
+> Bạn có thể commit nhiều lần trên cùng nhánh.
 
-**✅ NÊN:**
+---
 
-  * Mỗi người code một module riêng (VD: A làm BookDAO, B làm MemberDAO)
-  * Luôn pull trước khi bắt đầu code
-  * Commit thường xuyên với message rõ ràng
-  * Thông báo khi sửa file chung (`DatabaseConnection.cs`, `App.config`)
+## 🚀 Bước 3: Push & Tạo Pull Request
 
-**❌ KHÔNG NÊN:**
+Khi đã hoàn thành task:
 
-  * 2 người cùng sửa 1 file cùng lúc
-  * Commit code lỗi/chưa test
-  * Push mà không pull trước
-  * Commit file `App.config` với connection string cá nhân (nên dùng `.gitignore`)
+```bash
+# Đẩy nhánh của bạn lên GitHub
+git push origin [ten-nhanh-cua-ban]
+
+# Nếu là lần đầu push:
+git push --set-upstream origin [ten-nhanh-cua-ban]
+```
+
+Sau đó:
+
+1. Truy cập repo trên **GitHub**.
+2. Nhấn **“Compare & pull request”**.
+3. Viết tiêu đề và mô tả rõ ràng (VD: *Hoàn thành chức năng quản lý sách*).
+4. Ở phần **Reviewers**, chọn **Quang Anh**.
+5. Nhấn **Create pull request**.
+
+---
+
+## 🔍 Bước 4: Review & Merge
+
+* ❌ **Không được tự merge.**
+* **Quang Anh** sẽ review code:
+
+  * ✅ Nếu đạt yêu cầu → Merge vào `main`.
+  * 🛠️ Nếu cần chỉnh sửa → Quang Anh comment góp ý.
+    Bạn chỉ cần sửa code, commit & push lên **cùng nhánh**, PR sẽ tự cập nhật.
+* Sau khi nhánh đã merge:
+
+  ```bash
+  # Xóa nhánh local và quay lại main
+  git branch -d [ten-nhanh-cua-ban]
+  git checkout main
+  ```
+
+---
+
+## 💡 Tóm Tắt Workflow
+
+> * Mỗi người code trên **nhánh riêng**
+> * Gửi **Pull Request** để **Quang Anh review**
+> * Code rõ ràng, tuân thủ quy trình, tránh xung đột merge.
+
+```
+```
 
 -----
 
@@ -157,86 +244,111 @@ git push origin main
 | **Nguyễn Thị Hồng** | **(UI Design)**: Thiết kế toàn bộ giao diện (`.cs [Design]`) cho tất cả các Form. |
 | **Nguyễn Minh Lộc** | **(Login & Data)**: Logic `FormLogin`, Logic `FormMain` (navigation), `02_InsertSampleData.sql`. |
 
-#### 👤 Lê Quang Anh (Leader - Kiến trúc & Nghiệp vụ lõi)
+# 👥 Phân Công Nhiệm Vụ Dự Án Quản Lý Thư Viện
 
-**Vai trò:** Chịu trách nhiệm kiến trúc, các nghiệp vụ phức tạp nhất và quản lý source code.
+---
 
-1.  **Database & Architecture (Nền tảng):**
+## 👤 **Lê Quang Anh** (Leader - Kiến trúc & Nghiệp vụ lõi)
 
-      * **Thiết kế & Hoàn thiện Database:** Viết và chốt hạ file `Database/01_CreateDatabase.sql` (bao gồm tất cả các bảng, khóa ngoại, ràng buộc - theo `PHẦN 6` tài liệu).
-      * **Code `DatabaseConnection.cs`:** Hoàn thiện 100% class này (theo `PHẦN 5`) để team có thể test kết nối.
-      * **Quản lý Git:** Setup GitHub repo, quản lý branch và là người **duyệt (review) & merge** code của các thành viên khác.
+**Vai trò:**  
+Chịu trách nhiệm kiến trúc, các nghiệp vụ phức tạp nhất và quản lý source code.
 
-2.  **Module Lõi & Phức Tạp Nhất:**
+### 🧩 Database & Architecture (Nền tảng)
+- **Thiết kế & Hoàn thiện Database:**  
+  Viết và chốt hạ file `Database/01_CreateDatabase.sql`, đảm bảo bao gồm tất cả các bảng, khóa ngoại, và ràng buộc cần thiết.
+- **Code `DatabaseConnection.cs`:**  
+  Hoàn thiện 100% class này, bao gồm cả hàm `TestConnection` để team có thể kiểm tra kết nối.
+- **Quản lý Git:**  
+  - Setup GitHub repo.  
+  - Bảo vệ nhánh `main` (yêu cầu Pull Request).  
+  - Là người duy nhất **review & merge** code của các thành viên khác.
 
-      * **Authentication (Xác thực):**
-          * `UserDAO.cs` (Viết code validate user/pass)
-          * `UserBLL.cs` (Xử lý logic, mã hóa password nếu có)
-      * **Borrow Module (Nghiệp vụ Mượn/Trả):** Đây là module khó nhất vì nó liên kết tất cả các bảng khác.
-          * `BorrowDAO.cs` (Code các query mượn, trả, tìm phiếu, quá hạn)
-          * `BorrowBLL.cs` (Xử lý logic nghiệp vụ: *khi mượn phải giảm `Available` bên `Books`, khi trả phải tăng, kiểm tra độc giả có bị phạt không...*)
+### ⚙️ Module Lõi & Phức Tạp Nhất
+#### 🔐 Authentication (Xác thực)
+- `UserDAO.cs`: Viết code validate user/pass.  
+- `UserBLL.cs`: Xử lý logic, mã hóa password (nếu có).
 
-3.  **Hỗ Trợ & Tích Hợp:**
+#### 📚 Borrow Module (Mượn/Trả)
+- `BorrowDAO.cs`: Code các query mượn, trả, tìm phiếu, quá hạn.  
+- `BorrowBLL.cs`: Xử lý logic nghiệp vụ (giảm/tăng `Available` trong Books, kiểm tra phạt...).
 
-      * Hỗ trợ các thành viên khi bị "tắc" (block) ở phần DAL hoặc BLL.
-      * Chịu trách nhiệm tích hợp (merge) các form vào `FormMain`.
+### 🧠 Hỗ Trợ & Tích Hợp
+- Hỗ trợ các thành viên khi bị "tắc" ở phần DAL hoặc BLL.  
+- Tích hợp (merge) các form vào `FormMain`.
 
------
+---
 
-#### 👤 Nguyễn Duy Thành (Module Quản Lý Sách)
+## 👤 **Nguyễn Duy Thành** (Module Quản Lý Sách)
 
-**Vai trò:** Chịu trách nhiệm hoàn chỉnh (full-stack) cho module quản lý sách.
+**Vai trò:**  
+Chịu trách nhiệm hoàn chỉnh (full-stack) cho module **Quản lý sách**.
 
-1.  **Code `BookDAO.cs`:** Hoàn thiện tất cả các hàm CRUD cho Sách (Get, Insert, Update, Delete, Search...).
-2.  **Code `BookBLL.cs`:** Hoàn thiện logic validate dữ liệu sách (ví dụ: `Quantity` không được âm, `Title` không được rỗng...).
-3.  **Code `FormBookManagement.cs` (Logic):** Lập trình logic cho form:
-      * Load data lên `DataGridView`.
-      * Lấy data từ `TextBox` gọi BLL để Thêm/Sửa/Xóa.
-      * Xử lý sự kiện click cho các button.
+### 📘 Code
+- `BookDAO.cs`: Hoàn thiện tất cả các hàm CRUD (Get, Insert, Update, Delete, Search...).  
+- `BookBLL.cs`: Validate dữ liệu sách (Quantity ≥ 0, Title không rỗng...).
 
------
+### 🧩 Giao Diện & Logic
+- `FormBookManagement.cs` (Logic):
+  - Load data lên `DataGridView`.  
+  - Lấy data từ `TextBox` gọi BLL để Thêm/Sửa/Xóa.  
+  - Xử lý sự kiện click cho các button.
 
-#### 👤 Vũ Thị Thùy Trang (Module Quản Lý Độc Giả)
+---
 
-**Vai trò:** Chịu trách nhiệm hoàn chỉnh (full-stack) cho module quản lý độc giả.
+## 👤 **Vũ Thị Thùy Trang** (Module Quản Lý Độc Giả)
 
-1.  **Code `MemberDAO.cs`:** Hoàn thiện tất cả các hàm CRUD cho Độc giả.
-2.  **Code `MemberBLL.cs`:** Hoàn thiện logic validate dữ liệu (ví dụ: kiểm tra format email, số điện thoại...).
-3.  **Code `FormMemberManagement.cs` (Logic):** Lập trình logic cho form:
-      * Load data lên `DataGridView`.
-      * Lấy data từ `TextBox` gọi BLL để Thêm/Sửa/Xóa.
-      * Xử lý sự kiện click.
+**Vai trò:**  
+Chịu trách nhiệm hoàn chỉnh (full-stack) cho module **Quản lý độc giả**.
 
------
+### 📗 Code
+- `MemberDAO.cs`: Hoàn thiện tất cả các hàm CRUD.  
+- `MemberBLL.cs`: Validate dữ liệu (format email, số điện thoại...).
 
-#### 👤 Nguyễn Thị Hồng (UI Design)
+### 🧩 Giao Diện & Logic
+- `FormMemberManagement.cs` (Logic):
+  - Load data lên `DataGridView`.  
+  - Lấy data từ `TextBox` gọi BLL để Thêm/Sửa/Xóa.  
+  - Xử lý sự kiện click.
 
-**Vai trò:** Chịu trách nhiệm thiết kế toàn bộ giao diện người dùng (UI).
+---
 
-1.  **Thiết Kế Giao Diện (UI Design):**
-      * Chịu trách nhiệm **kéo thả, thiết kế** giao diện cho *tất cả* các Form (`.cs [Design]`).
-      * `FormLogin.cs [Design]`
-      * `FormMain.cs [Design]` (Thiết kế menu, các nút điều hướng, icon).
-      * `FormBookManagement.cs [Design]`
-      * `FormMemberManagement.cs [Design]`
-      * `FormBorrowManagement.cs [Design]`
-2.  **Chuẩn Hóa:** Đảm bảo giao diện đẹp, nhất quán, và các control được đặt tên đúng chuẩn (ví dụ: `txtBookTitle`, `dgvBooks`, `btnAddNewBook`) để các thành viên khác code logic.
+## 👤 **Nguyễn Thị Hồng** (UI Design)
 
------
+**Vai trò:**  
+Chịu trách nhiệm **thiết kế toàn bộ giao diện người dùng (UI).**
 
-#### 👤 Nguyễn Minh Lộc (Login & Data)
+### 🎨 Thiết Kế Giao Diện (UI Design)
+Thiết kế phần **[Design]** của tất cả các form:
+- `FormLogin.cs [Design]`  
+- `FormMain.cs [Design]` (menu, điều hướng, icon)  
+- `FormBookManagement.cs [Design]`  
+- `FormMemberManagement.cs [Design]`  
+- `FormBorrowManagement.cs [Design]`
 
-**Vai trò:** Chịu trách nhiệm cho điểm vào (entry-point) của ứng dụng và dữ liệu test.
+### 🧱 Chuẩn Hóa
+- Đảm bảo giao diện **đẹp, nhất quán**.  
+- Các control đặt tên đúng chuẩn (ví dụ: `txtBookTitle`, `dgvBooks`, `btnAddNewBook`).
 
-1.  **Code `FormLogin.cs` (Logic):**
-      * Lập trình logic cho form: Lấy `username`/`password` từ `TextBox`.
-      * Gọi `UserBLL.Login()` (do Lê Quang Anh viết).
-      * Nếu đăng nhập thành công, mở `FormMain` và đóng `FormLogin`.
-2.  **Code `FormMain.cs` (Logic):**
-      * Lập trình logic cho form: Viết các sự kiện `Click` cho các nút menu/button để mở các form con (do Nguyễn Thị Hồng thiết kế).
-3.  **Data & Test:**
-      * Viết/bổ sung script `Database/02_InsertSampleData.sql` (chèn nhiều dữ liệu mẫu để team test).
-      * Phối hợp test các chức năng sau khi hoàn thành.
+---
+
+## 👤 **Nguyễn Minh Lộc** (Login & Data)
+
+**Vai trò:**  
+Chịu trách nhiệm **điểm vào (entry-point)** của ứng dụng và **dữ liệu test.**
+
+### 🔑 Code Logic
+- `FormLogin.cs` (Logic):
+  - Lấy `username` / `password` từ `TextBox`.  
+  - Gọi `UserBLL.Login()` (do Lê Quang Anh viết).  
+  - Nếu đăng nhập thành công → mở `FormMain`, đóng `FormLogin`.
+
+- `FormMain.cs` (Logic):
+  - Viết sự kiện `Click` cho các nút menu để mở form con (do Nguyễn Thị Hồng thiết kế).
+
+### 🧾 Data & Test
+- Viết/bổ sung script `Database/02_InsertSampleData.sql` (chèn dữ liệu mẫu để test).  
+- Phối hợp test các chức năng sau khi hoàn thành.
+```
 
 -----
 
