@@ -81,25 +81,6 @@ Phần mềm quản lý thư viện được phát triển bằng C\# WinForms t
 
 ### 👨‍💼 Dành cho LEADER (Setup lần đầu)
 
-```bash
-# 1. Tạo repo trên GitHub (tên: QLTV_Project)
-
-# 2. Mở Terminal/CMD tại thư mục QLTV_Project
-cd path/to/QLTV_Project
-
-# 3. Khởi tạo Git
-git init
-git add .
-git commit -m "Initial commit: Project skeleton"
-
-# 4. Kết nối với GitHub và push
-git remote add origin https://github.com/QuangAnh253/QLTV_Project.git
-git branch -M main
-git push -u origin main
-
-# 5. Thông báo link repo cho team members
-```
-
 ### 👥 Dành cho MEMBERS (Clone và setup)
 
 ```bash
