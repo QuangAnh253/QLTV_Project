@@ -93,7 +93,7 @@ git add .
 git commit -m "Initial commit: Project skeleton"
 
 # 4. Kết nối với GitHub và push
-git remote add origin https://github.com/YOUR_USERNAME/QLTV_Project.git
+git remote add origin https://github.com/QuangAnh253/QLTV_Project.git
 git branch -M main
 git push -u origin main
 
@@ -104,7 +104,7 @@ git push -u origin main
 
 ```bash
 # 1. Clone repo về máy
-git clone https://github.com/YOUR_USERNAME/QLTV_Project.git
+git clone https://github.com/QuangAnh253/QLTV_Project.git
 cd QLTV_Project
 
 # 2. Setup Database (theo hướng dẫn ở Phần 1)
