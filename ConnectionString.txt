@@ -1,0 +1,31 @@
+﻿=================================================
+
+MẪU CONNECTION STRING CHO SQL SERVER
+
+=================================================
+
+
+
+Cách 1: Windows Authentication (khuyến nghị cho local dev)
+
+------------------------------------------------------
+
+Server=YOUR_SERVER_NAME;Database=QLTV_DB;Integrated Security=True;
+
+
+
+Cách 2: SQL Server Authentication
+
+------------------------------------------------------
+
+Server=YOUR_SERVER_NAME;Database=QLTV_DB;User Id=YOUR_USERNAME;Password=YOUR_PASSWORD;
+
+
+
+LƯU Ý:
+
+- Thay YOUR_SERVER_NAME bằng tên SQL Server instance của bạn
+
+(Ví dụ: localhost, .\SQLEXPRESS, DESKTOP-ABC\SQLEXPRESS)
+
+- Copy connection string này vào App.config trong QLTV_GUI
